@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>API test</title>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <img id="yn-image" src="" alt="random images">
+        <script>
+            const request = new XMLHttpRequest();
+            request.open('Get','https://yesno.wtf/api');
+            request.onload = function(){
+                const data = JSON.parse(request.responseText);
+                console.log(data);
+                const image = document.getElementById('yn-image');
+                image.src = data.image;
+            };
+            request.send();
+        </script>
+    </body>
+</html>

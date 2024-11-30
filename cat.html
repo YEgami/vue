@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>Cat API test</title>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <img id="cat-image" src="" alt="random cat images">
+        <script>
+            const request = new XMLHttpRequest();
+            request.open('Get','https://api.thecatapi.com/v1/images/search');
+            request.onload = function(){
+                const data = JSON.parse(request.responseText);
+                console.log(data);
+                const catimage = document.getElementById('cat-image');
+                catimage.src = data[0].url;
+                console.log(data[0].height,data[0].width);
+            };
+            request.send();
+        </script>
+    </body>
+</html>
