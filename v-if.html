@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+    </head>
+    <body>
+        <style>
+            .red{font-size: 36pt;color: red;}
+            .white{font-size: 36pt;color: white;}
+        </style>
+        <h1 class="bg-primary text-white display-4 px-3">Vue3</h1>
+        <div id="app" class="bg-secondary display-4 px-3 container">
+            <p v-if="isRed" class="red">
+                {{ message }}
+            </p>
+            <p v-else class="white">
+                {{ message2 }}
+            </p>
+        </div>
+
+        <script>
+            const appdata = {
+                data() {
+                    return {
+                        message : null,
+                        isRed : true,
+                        isWhite : false,
+                        count : 0
+                    }
+                },
+                mounted(){
+                    this.message = "This is sample page"
+                    this.message2 = "ページ表示中"
+                    setInterval(() => {
+                    this.isRed = !this.isRed
+                    this.isWhite =!this.isWhite
+                    }, 1000) 
+                }
+            }
+        Vue.createApp(appdata).mount('#app')
+        </script>
+    </body>
+</html>
