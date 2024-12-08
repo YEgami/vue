@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Vue.jsサンプル10回 bootstrap</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+    </head>
+
+<body>
+    <h1 class="bg-primary text-white display-4 px-3">Vue3</h1>
+    <div id="app" class="bg-secondary text-white display-4 px-3 container">
+        <div v-html="message"></div>
+    </div>
+    <script>
+        const list = ['One', 'Two', 'Three'];
+        const appdata = {
+            data() {
+                return {
+                    message: `<ul>
+                                <li>${list[0]}</li>
+                                <li>${list[1]}</li>
+                                <li>${list[2]}</li>
+                              </ul>`
+                }
+            }
+        }
+
+        Vue.createApp(appdata).mount('#app');
+    </script>
+</body>
+</html>
