@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+    </head>
+    <body>
+        <style>
+            .red{font-size: 18pt;color: red;}
+            .white{font-size: 18pt;color: white; background-color: gray;}
+            .tabledata1{font-size: 24px; height:auto; width: auto; background-color: lightgray;}
+            .tabledata2{font-size: 18px; height:24px; width: 200px;}
+        </style>
+        <h1 class="bg-primary text-white display-4 px-3">Vue3</h1>
+        <div id="app">
+            <button v-on:click="onClick">マウスをクリック</button>
+            <p>{{ now }}</p>
+        </div>
+        <div id="app2">
+            <button v-on:dbclick="onClick">マウスをだぶるクリック</button>
+            <p>{{ now }}</p>
+        </div>
+
+        <p><button onclick="get();">クリック</button></p>
+        <p id="memo">めも</p>
+        <script>
+            const memo = document.getElementById("memo");
+            function get(){
+                let now = new Date();
+                let year = now.getFullYear();
+                let month = now.getMonth();
+                memo.innerHTML = now.toLocaleString('ja-JP');
+            }
+
+            const appdata = {
+                data: ()=> ({
+                    now: '-'
+                }),
+                methods: {
+                    onClick: function(){
+                        let d = new Date()
+                        this.now = d.toLocaleString('ja-JP')
+                    }
+                }
+            }
+            const appdata2 = {
+                data: ()=> ({
+                    now: '-'
+                }),
+                methods: {
+                    onClick: function(){
+                        this.now = "ダブルクリック"
+                    }
+                }
+            }
+        Vue.createApp(appdata).mount('#app')
+        Vue.createApp(appdata2).mount('#app2')
+        </script>
+    </body>
+</html>
