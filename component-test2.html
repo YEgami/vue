@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .demo {
+                font-family: sans-serif;
+                background-color: azure;
+                border: 4px solid #003cff;
+                border-radius: 20px;
+                padding: 20px 30px;
+                margin-top: 1em;
+                margin-bottom: 40px;
+                user-select: none;
+                overflow-x: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="blog-posts-events-demo" class="demo">
+            <div :style="{fontSize: postFontSize + 'em'}">
+                <blog-post
+                v-for="post in posts"
+                :key="post.id"
+                :title="post.title"
+                :desc="post.desc"
+                @enlarge-text="postFontSize += 0.1"
+                ></blog-post>
+            </div>
+        </div>
+
+        <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+        <script>
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        posts: [
+                            {id: 1, title: 'Vueとの航海', desc: 'リードテキスト1'},
+                            {id: 2, title: 'Vueとの旅', desc: 'リードテキスト2'},
+                            {id: 3, title: 'Vue旅行記', desc: 'リードテキスト3'},
+                            {id: 4, title: 'Vueの思いで', desc: 'リードテキスト4'},
+                        ],
+                        postFontSize: 1
+                    };
+                }
+            });
+
+            app.component('blog-post', {
+                props: ['title', 'desc'],
+                template: `
+                    <div class='blog-post'>
+                        <h4>{{ title }}</h4>
+                        <span>{{ desc }}</span>
+                        <button @click="$emit('enlargeText')">
+                            Enlarge text
+                        </button>
+                    </div>
+                `
+            });
+            app.mount('#blog-posts-events-demo');
+        </script>
+    </body>
+</html>
