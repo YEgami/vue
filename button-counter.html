@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .demo {
+                font-family: sans-serif;
+                background-color: azure;
+                border: 4px solid #003cff;
+                border-radius: 20px;
+                padding: 20px 30px;
+                margin-top: 1em;
+                margin-bottom: 40px;
+                user-select: none;
+                overflow-x: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="components-demo" class="demo">
+            <button-counter></button-counter><br>
+            <button-counter></button-counter><br>
+            <button-counter></button-counter><br>
+        </div>
+
+        <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+        <script>
+            // Crete vue application
+            const app = Vue.createApp({});
+            //Define a new global component called button-counter
+            app.component('button-counter',{
+                data(){
+                    return{
+                        count:0
+                    };
+                },
+                template:`
+                <button v-on:click="count++">
+                    カウント: {{ count }}
+                </button>`
+            });
+            app.mount('#components-demo')
+        </script>
+    </body>
+</html>
