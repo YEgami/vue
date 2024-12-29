@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat API Sample</title>
+    <script src="https://unpkg.com/vue@3.5.0"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.js"></script>
+</head>
+<body>
+    <div id="app">
+        <cat-image></cat-image>
+    </div>
+    <div id="app2">
+        <qiita-s></qiita-s>
+    </div>
+
+    <script>
+        const app = Vue.createApp({});
+        app.component('cat-image', {
+            data() {
+                return {
+                    catImage: '',
+                    catId: '',
+                    catWidth: '',
+                    catHeight: '',
+                };
+            },
+            methods: {
+                getRandomCatImage() {
+                    // Cat APIからランダムな猫の画像を取得
+                    axios.get('https://api.thecatapi.com/v1/images/search')
+                        .then((response) => {
+                            this.catImage = response.data[0].url;
+                            this.catId = response.data[0].id;
+                            this.catWidth = response.data[0].width;
+                            this.catHeight = response.data[0].height;
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
+            },
+            mounted() {
+                // アプリがマウントされたときに初期画像を取得
+                this.getRandomCatImage();
+            },
+            template: `
+                <div>
+                    <h1>猫画像ランダム取得</h1>
+                    <img :src="catImage" alt="Random Cat" width="300px">
+                    <p>
+                        ID: <span id="catId">{{ catId }}</span><br>
+                        Width: <span id="catWidth">{{ catWidth }}</span><br>
+                        Height: <span id="catHeight">{{ catHeight }}</span>
+                    </p>
+                    <p>
+                        <button @click="getRandomCatImage">Get New Cat</button>
+                    </p>
+                </div>
+            `
+        });
+        app.mount('#app');
+
+        const app2 = Vue.createApp({});
+        app2.component('qiita-s', {
+        data: () => ({
+            items: null,
+            keyword: '',
+            message: ''
+        }),
+        watch: {
+            keyword: function(newKeyword, oldKeyword) {
+                console.log(newKeyword)
+                this.message = '入力待ち...'
+                console.log(this.message)
+                this.debouncedGetAnswer()
+            }
+        },
+        mounted: function(){
+//            this.keyword = 'Javascript'
+//            this.getAnswer()
+            this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
+        },
+        methods: {
+            getAnswer: function() {
+                if(this.keyword ===''){
+                    console.log('入力なし')
+                    this.items = null
+                    return
+                }
+                this.message = 'loading...'
+                const vm = this
+                const params = { page: 1, per_page: 20, query: this.keyword }
+                axios.get('https://qiita.com/api/v2/items', { params})
+                    .then(function(response){
+//                        console.log(response)
+                        vm.items = response.data;
+                    })
+                    .catch(function(error){
+                        vm.message = 'Error!' + error
+                    })
+                    .finally(function() {
+
+                    })
+                }
+            },
+        template: `
+            <div>
+                <h1>Qiita検索</h1>
+                <p>
+                    <input type="text" v-model="keyword">
+                </p>
+                <ul>
+                    <li v-for="item in items">
+                        <a v-bind:href="item.url" target="_blank">
+                            {{ item.title }}                
+                        </a>
+                        likes: {{ item.likes_count }}
+                        
+                    </li>
+                </ul>
+            </div>
+        `
+        });
+      app2.mount('#app2')
+    </script>
+</body>
+</html>
