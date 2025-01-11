@@ -7,11 +7,49 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://unpkg.com/vue@3.5.0"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f2f2f2;
+        }
+
+        #app{
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            box-shadow: 10px 10px 5px grey;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #295f2b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover{
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <h1 class="bg-primary">Random Cat Image</h1>
-        <img :src="catImage" alt="Random Cat" width="50px">
+        <h1 class="bg-primary" id="title">{{ title }}</h1>
+        <img :src="catImage" alt="Random Cat" >
         <p>
             ID: <span id="catId">{{ catId }}</span><br>
             Width: <span id="catWidth">{{ catWidth }}</span><br>
@@ -26,6 +64,7 @@
         const app = Vue.createApp({
             data() {
                 return {
+                    title: '',
                     catImage: '',
                     catId: '',
                     catWidth: '',
@@ -37,6 +76,7 @@
                     // Cat APIからランダムな猫の画像を取得
                     axios.get('http://localhost:30035/cat')
                         .then((response) => {
+                            this.title = response.data[0].id;
                             this.catImage = response.data[0].url;
                             this.catId = response.data[0].id;
                             this.catWidth = response.data[0].width;

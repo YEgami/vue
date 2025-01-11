@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <style>
+            .red{font-size: 36pt;color: red;}
+            .white{font-size: 36pt;color: white;}
+            .tabledata1{font-size: 24px; height:auto; width: auto; background-color: lightgray;}
+            .tabledata2{font-size: 18px; height:24px; width: 200px;}
+        </style>
+        <h1 class="bg-primary text-white display-4 px-3">Vue3</h1>
+        <div id="app" class="container">
+            {{message}}
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Mail</th>
+                        <th>Tel</th>
+                    </tr>
+                </thead>
+                <tr v-for="(item, index) in items" >
+                    <td>{{index}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.mail}}</td>
+                    <td>{{item.tel}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <script>
+            const appdata = {
+                data() {
+                    return {
+                        message:'テーブルデータを表示します',
+                        items:
+                        []
+                    }
+                },
+                mounted(){
+                    const backendEndpoint = 'http://localhost:30035/notes_from_b';
+                    
+                    axios.get(backendEndpoint)
+                        .then(response => {
+                            this.items = response.data;
+                            console.log(this.items)
+                        })
+                        .catch(error => {
+                            console.error('データの取得に失敗しました',error)
+                        });
+                }
+            }
+        Vue.createApp(appdata).mount('#app')
+        </script>
+    </body>
+</html>
