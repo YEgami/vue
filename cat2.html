@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat API Sample</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://unpkg.com/vue@3.5.0"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1 class="bg-primary">Random Cat Image</h1>
+        <img :src="catImage" alt="Random Cat" width="50px">
+        <p>
+            ID: <span id="catId">{{ catId }}</span><br>
+            Width: <span id="catWidth">{{ catWidth }}</span><br>
+            Height: <span id="catHeight">{{ catHeight }}</span>
+        </p>
+        <p>
+            <button @click="getRandomCatImage">Get New Cat</button>
+        </p>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    catImage: '',
+                    catId: '',
+                    catWidth: '',
+                    catHeight: '',
+                };
+            },
+            methods: {
+                getRandomCatImage() {
+                    // Cat APIからランダムな猫の画像を取得
+                    axios.get('http://localhost:30035/cat')
+                        .then((response) => {
+                            this.catImage = response.data[0].url;
+                            this.catId = response.data[0].id;
+                            this.catWidth = response.data[0].width;
+                            this.catHeight = response.data[0].height;
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
+            },
+            mounted() {
+                // アプリがマウントされたときに初期画像を取得
+                this.getRandomCatImage();
+            },
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html>
